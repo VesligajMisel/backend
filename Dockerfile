@@ -1,31 +1,19 @@
-FROM node:23-alpine3.20
+FROM node:alpine
 
+# Set working directory
 WORKDIR /app
 
+# Copy package.json and package-lock.json (if available) first to leverage Docker cache
 COPY package*.json ./
 
-COPY ./bin ./bin
-
-COPY ./controllers ./controllers
-COPY ./middleware ./middleware
-COPY ./models ./models
-COPY ./routes ./routes
-
-COPY ./public ./public
-COPY ./resources ./resources
-COPY ./tests ./tests
-
-COPY app.js ./
-COPY swagger.js ./
-
-ARG DB_URI
-ARG JWT_KEY
-
-ENV  DB_URI=$DB_URI
-ENV  JWT_KEY=$JWT_KEY
-
+# Install dependencies
 RUN npm install
 
+# Copy all necessary files at once
+COPY . .
+
+# Expose the application port
 EXPOSE 3000
 
-CMD [ "npm", "start" ]
+# Run the app
+CMD ["npm", "start"]

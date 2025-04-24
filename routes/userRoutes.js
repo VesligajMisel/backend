@@ -675,8 +675,6 @@ router.post('/buy_item', JWTCheck.authenticateToken, userController.buyItem);
  *       401:
  *         $ref: '#/components/responses/UnauthorizedMissingToken'
  *       403:
- *         $ref: '#/components/responses/ForbiddenRevokedToken'
- *       403:
  *         description: Current password does not match
  *         content:
  *           application/json:

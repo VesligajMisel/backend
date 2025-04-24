@@ -6,14 +6,14 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mongoose = require('mongoose');
-
+const cors = require('cors')
 
 
 // Connect to MongoDB
 if (process.env.NODE_ENV !== 'test') {
   mongoose.connect(process.env.DB_URI)
     .then(() => console.log('✅ Connected to MongoDB'))
-    .catch(err => console.error('❌ Failed to connect to MongoDB', err));
+    .catch(err => console.error('❌ Failed to connect to MongoDB', process.env.DB_URI, err));
 }
 
 
@@ -25,6 +25,15 @@ const gameRoutes = require('./routes/gameRoutes')
 const { swaggerUi, specs } = require('./swagger');
 
 const app = express();
+
+const corsOptions = {
+  origin: 'http://localhost:3000',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
+
 
 // Middleware
 app.use(logger('dev'));
